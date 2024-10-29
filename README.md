@@ -27,13 +27,17 @@ Ce n'est pas obligatoire d'utiliser ce formatteur spécifique, mais personnellem
 
 ## CDN Vue
 
+La méthode d'installation recommandé par les créateurs du framework est d'utiliser un package manager tels que `npm` ou `yarn` ainsi que le Vue CLI afin de créer un template de projet avec toute les dépendances nécessaires (voir [Creating a Vue Application](https://vuejs.org/guide/quick-start.html#creating-a-vue-application)).
+
+Cependant, dans le cadre du workshop, nous allons utiliser un CDN afin de gagner du temps sur la mise en place du projet.
+
 Copier-coller le CDN Vue sur la page de Vue 3 dans la balise head du HTML, nous utiliserons une version précise, donc voici le CDN pour cette version.
 
 ```html
-<script src="https://unpkg.com/vue@3.3.4"></script>
+<script src="https://unpkg.com/vue@3.5.12/dist/vue.global.js"></script>
 ```
 
-> Source for CDN : https://www.bootstrapcdn.com/
+> Source for CDN : https://vuejs.org/guide/quick-start.html#using-vue-from-cdn
 
 # 2. Creating the Vue App
 
