@@ -6,7 +6,51 @@ export default {
     return {
       count: 0,
       logo: "/logo.svg",
-      title: "Order Nespresso"
+      title: "Order Nespresso",
+      coffees: [
+      {
+    id: 1,
+    name: 'Some weird coffee',
+    price: 2,
+  },
+  {
+    id: 2,
+    name: 'Espresso',
+    price: 5,
+  },
+  {
+    id: 3,
+    name: 'Evil coffee',
+    price: 389427,
+  },
+  {
+    id: 4,
+    name: 'Latte',
+    price: 10,
+  }
+      ],
+      carouselImages: [
+  {
+    id: 1,
+    text: 'Capsule 1',
+    image: '/assets/images/colombia.png',
+  },
+  {
+    id:  2,
+    text: 'Capsule 2',
+    image: './assets/images/colombia_de_cote.png',
+  },
+  {
+    id: 3,
+    text: 'Tasse',
+    image: './assets/images/colombia_tasse.png',
+  },
+  {
+    id: 4,
+    text: 'Paquet',
+    image: './assets/images/colombia_paquet.png',
+  }
+],
     }
   },
 
@@ -23,16 +67,35 @@ export default {
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" v-bind:src="logo" width="125" height="125" />
+    <img alt="Vue logo" :class="[count > 0 ? 'logo' : 'hidden']" v-on:click="count -= 1" v-bind:src="logo" width="125" height="125" />
 
   </header>
 
   <main>
   <h1>{{title}}</h1>
+  <p>click count button to augment count, click the big logo to decrement</p>
   <button @click="increment">Count is: {{ count }} <img alt="Vue logo" class="logo" v-bind:src="logo" width="20" height="20" /></button>
   <p v-if="count%2==0">even count</p>
   <p v-else>odd count</p>
   <p v-show="count > 10 && count < 20">You clicked a lot!</p>
+
+  <h2>We sell:</h2>
+  <ul>
+  <li v-for="coffee in coffees" :key="coffee.id">
+    {{ coffee.name }}, {{ coffee.price }}$
+  </li>
+  </ul>
+
+  <div>
+  <span
+    v-for="carouselImage in carouselImages"
+    :key="carouselImage.id"
+    @mouseover="updateImage(carouselImage.image)"
+  >
+    <img height="50" alt="carouselImage.text" :src="carouselImage.image" />
+  </span>
+</div>
+
   </main>
 </template>
 
@@ -63,4 +126,9 @@ header {
     flex-wrap: wrap;
   }
 }
+
+.hidden {
+  display:none
+}
+
 </style>
