@@ -1,32 +1,40 @@
 <script >
+import { computed } from 'vue';
+
 export default {
   // Properties returned from data() become reactive state
   // and will be exposed on `this`.
   data() {
+
     return {
       count: 0,
+      selectedImage: 0,
       logo: "/logo.svg",
-      title: "Order Nespresso",
+
       coffees: [
       {
     id: 1,
     name: 'Some weird coffee',
     price: 2,
+    stock: 3,
   },
   {
     id: 2,
     name: 'Espresso',
     price: 5,
+    stock: 1,
   },
   {
     id: 3,
     name: 'Evil coffee',
     price: 389427,
+    stock: 4,
   },
   {
     id: 4,
     name: 'Latte',
     price: 10,
+    stock: 5,
   }
       ],
       carouselImages: [
@@ -59,25 +67,44 @@ export default {
   methods: {
     increment() {
       this.count++
-    }
-  }
+    },
+
+    order()
+    {
+      this.coffees[this.selectedImage].stock--
+    },
+
+
+    updateSelectedImage(index) { this.selectedImage = index },
+
+    image() { return this.carouselImages[this.selectedImage].image }
+  },
+
+  computed: {
+  title() {
+    return `Order ${this.coffees[this.selectedImage]?.name || 'Coffee'}`;
+  },
+}
 }
 
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" :class="[count > 0 ? 'logo' : 'hidden']" v-on:click="count -= 1" v-bind:src="logo" width="125" height="125" />
+    <img alt="Vue logo" :class="[coffees[selectedImage].stock < 20 ? 'logo' : 'hidden']" v-on:click="coffees[selectedImage].stock += 1" v-bind:src="logo" width="125" height="125" />
 
   </header>
 
   <main>
   <h1>{{title}}</h1>
   <p>click count button to augment count, click the big logo to decrement</p>
-  <button @click="increment">Count is: {{ count }} <img alt="Vue logo" class="logo" v-bind:src="logo" width="20" height="20" /></button>
-  <p v-if="count%2==0">even count</p>
+  <button  @click="order" :disabled="coffees[selectedImage].stock <= 0">Count is: {{ coffees[selectedImage].stock }} <img alt="Vue logo" class="logo" v-bind:src="logo" width="20" height="20" /></button>
+  <p v-if="coffees[selectedImage].stock%2==0">even count</p>
   <p v-else>odd count</p>
-  <p v-show="count > 10 && count < 20">You clicked a lot!</p>
+  <p v-show="coffees[selectedImage].stock > 10 && coffees[selectedImage].stock < 20">You clicked a lot!</p>
+  <p v-if="coffees[selectedImage].stock==20">You are clicking too wildly, we have to disable count. <br>You won't really drink that much</p>
+
+  <p>You selected<img height="30" alt="selected coffee" :src="image()"></p>
 
   <h2>We sell:</h2>
   <ul>
@@ -90,7 +117,7 @@ export default {
   <span
     v-for="carouselImage in carouselImages"
     :key="carouselImage.id"
-    @mouseover="updateImage(carouselImage.image)"
+    @click="updateSelectedImage(carouselImage.id-1)"
   >
     <img height="50" alt="carouselImage.text" :src="carouselImage.image" />
   </span>
